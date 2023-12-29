@@ -12,6 +12,9 @@
 
     <h1>Stocks Watchlist</h1>
 
+    <!-- Add file input for CSV -->
+    <input type="file" id="fileInput" accept=".csv" onchange="handleFileInput(event)">
+
     <form id="addStockForm">
         <label for="stockSymbol">Indian Stock Symbol:</label>
         <input type="text" id="stockSymbol" required>
@@ -67,6 +70,43 @@
 
             // Clear the input field after adding the stock
             stockSymbolInput.value = '';
+        }
+
+        // Add this function to handle file input
+        function handleFileInput(event) {
+            const fileInput = event.target;
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const csvData = e.target.result;
+                    // Parse CSV data and update the stocks array
+                    updateStocksFromCSV(csvData);
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        // Add this function to update stocks array from CSV data
+        function updateStocksFromCSV(csvData) {
+            const rows = csvData.split('\n');
+            const newStocks = [];
+
+            for (const row of rows) {
+                const columns = row.split(',');
+                if (columns.length >= 2) {
+                    const stockName = columns[0].trim();
+                    const stockSymbol = columns[1].trim();
+                    newStocks.push({ name: stockName, symbol: stockSymbol });
+                }
+            }
+
+            // Merge newStocks with existing stocks array
+            stocks.push(...newStocks);
+
+            // Display the updated stocks
+            displayStocks();
         }
 
         displayStocks();
