@@ -17,17 +17,20 @@
     </ul>
 
     <script>
-        // Define your stocks and symbols
         const stocks = [
             { name: 'Company A', symbol: 'AAPL' },
             { name: 'Company B', symbol: 'GOOGL' },
             { name: 'Company C', symbol: 'MSFT' },
+            // Add Indian stocks
+            { name: 'Reliance Industries', symbol: 'RELIANCE.BO' },
+            { name: 'Infosys', symbol: 'INFY' },
+            { name: 'Tata Consultancy Services', symbol: 'TCS' },
+            { name: 'HDFC Bank', symbol: 'HDFCBANK.BO' },
             // Add more stocks as needed
         ];
 
-        // Function to get stock prices from Alpha Vantage API
         async function getStockPrice(symbol) {
-            const apiKey = 'B2LBDOAXE9NY4QLI';
+            const apiKey = 'B2LBBDOAXE9NY4QLI';
             const apiUrl = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${apiKey}`;
 
             try {
@@ -35,19 +38,15 @@
                 const data = await response.json();
                 return data['Global Quote']['05. price'];
             } catch (error) {
-                console.error('Eror fetching stock price:', error);
+                console.error('Error fetching stock price:', error);
                 return 'N/A';
             }
         }
 
-        // Function to display stocks on the page
         async function displayStocks() {
             const stockList = document.getElementById('stockList');
-
-            // Clear existing list items
             stockList.innerHTML = '';
 
-            // Loop through stocks and add to the list
             for (const stock of stocks) {
                 const listItem = document.createElement('li');
                 const stockPrice = await getStockPrice(stock.symbol);
@@ -56,7 +55,6 @@
             }
         }
 
-        // Call the function to display stocks initially
         displayStocks();
     </script>
 
