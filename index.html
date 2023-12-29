@@ -23,15 +23,19 @@
     </ul>
 
     <script>
-        const stocks = [
-            { name: 'Company A', symbol: 'AAPL' },
-            { name: 'Company B', symbol: 'GOOGL' },
-            { name: 'Company C', symbol: 'MSFT' },
-            { name: 'Reliance Industries', symbol: 'RELIANCE.BO' },
-            { name: 'Infosys', symbol: 'INFY' },
-            { name: 'Tata Consultancy Services', symbol: 'TCS' },
-            { name: 'HDFC Bank', symbol: 'HDFCBANK.BO' },
-        ];
+        // Function to retrieve saved stocks from local storage
+        function getSavedStocks() {
+            const savedStocks = localStorage.getItem('stocks');
+            return savedStocks ? JSON.parse(savedStocks) : [];
+        }
+
+        // Function to save stocks to local storage
+        function saveStocks() {
+            localStorage.setItem('stocks', JSON.stringify(stocks));
+        }
+
+        // Initialize stocks with saved data
+        const stocks = getSavedStocks();
 
         async function getStockPrice(symbol) {
             // Code for fetching stock price (same as before)
@@ -56,6 +60,7 @@
             if (newStockSymbol && !stocks.some(stock => stock.symbol === newStockSymbol)) {
                 stocks.push({ name: 'New Stock', symbol: newStockSymbol });
                 displayStocks();
+                saveStocks(); // Save stocks to local storage
             } else {
                 alert('Stock symbol is invalid or already in the watchlist.');
             }
